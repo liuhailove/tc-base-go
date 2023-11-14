@@ -3,8 +3,8 @@ syntax = "proto3";
 package tc;
 option go_package = "github.com/liuhailove/protocol/tc";
 
-import "livekit_models.proto";
-import "livekit_egress.proto";
+import "tc_models.proto";
+import "tc_egress.proto";
 
 // Room service that can be performed on any node
 // they are Twirp-based HTTP req/responses
@@ -153,10 +153,10 @@ message SendDataRequest {
   bytes data = 2;
   DataPacket.Kind kind = 3;
   // mark deprecated
-  repeated string destination_sids = 4 [deprecated=true];
+  repeated string destination_sids = 4 [deprecated = true];
   // when set, only forward to these identities
   repeated string destination_identities = 6;
-  optional string topic = 5;
+  string topic = 5;
 
   // NEXT_ID: 7
 }

@@ -4,10 +4,10 @@ package tc;
 option go_package = "github.com/liuhailove/protocol/tc";
 
 // internal protos, not exposed to clients
-import "livekit_models.proto";
-import "livekit_rtc.proto";
-import "livekit_room.proto";
-import "livekit_egress.proto";
+import "tc_models.proto";
+import "tc_rtc.proto";
+import "tc_room.proto";
+import "tc_egress.proto";
 
 enum NodeType {
   SERVER = 0;
@@ -149,7 +149,7 @@ message StartSession {
   //if reconnect, client will set current sid
   string participant_id = 16;
   ReconnectReason reconnect_reason = 17;
-  optional bool subscriber_allow_pause = 18;
+  bool subscriber_allow_pause = 18;
 }
 
 message EndSession {

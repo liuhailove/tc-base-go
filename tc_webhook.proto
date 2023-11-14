@@ -2,12 +2,10 @@ syntax = "proto3";
 
 package tc;
 option go_package = "github.com/liuhailove/protocol/tc";
-option csharp_namespace = "LiveKit.Proto";
-option ruby_package = "LiveKit::Proto";
 
-import "livekit_models.proto";
-import "livekit_egress.proto";
-import "livekit_ingress.proto";
+import "tc_models.proto";
+import "tc_egress.proto";
+import "tc_ingress.proto";
 
 message WebhookEvent {
   // one of room_started, room_finished, participant_joined, participant_left,

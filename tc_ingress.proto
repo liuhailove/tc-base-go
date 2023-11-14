@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package tc;
 
-import "livekit_models.proto";
+import "tc_models.proto";
 
 option go_package = "github.com/liuhailove/protocol/tc";
 
@@ -157,7 +157,7 @@ message UpdateIngressRequest {
   string room_name = 3;
   string participant_identity = 4;
   string participant_name = 5;
-  optional bool bypass_transcoding = 8;
+  bool bypass_transcoding = 8;
   IngressAudioOptions audio = 6;
   IngressVideoOptions video = 7;
 }

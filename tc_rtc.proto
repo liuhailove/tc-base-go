@@ -3,7 +3,7 @@ syntax = "proto3";
 package tc;
 option go_package = "github.com/liuhailove/protocol/tc";
 
-import "livekit_models.proto";
+import "tc_models.proto";
 
 message SignalRequest {
   oneof message {
