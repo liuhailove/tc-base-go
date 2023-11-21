@@ -5,9 +5,9 @@ option go_package = "github.com/liuhailove/protocol/tc";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
-import "livekit_models.proto";
-import "livekit_egress.proto";
-import "livekit_ingress.proto";
+import "tc_models.proto";
+import "tc_egress.proto";
+import "tc_ingress.proto";
 
 service AnalyticsRecorderService {
   rpc IngestStats(stream AnalyticsStats) returns (google.protobuf.Empty){};

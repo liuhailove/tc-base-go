@@ -15,7 +15,7 @@ message Job {
   string id = 1;
   JobType type = 2;
   Room room = 3;
-  optional ParticipantInfo participant = 4;
+  ParticipantInfo participant = 4;
 }
 
 // from Worker to Server
