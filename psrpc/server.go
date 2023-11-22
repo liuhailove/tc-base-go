@@ -2,8 +2,9 @@ package psrpc
 
 import (
 	"context"
-	"github.com/golang/protobuf/proto"
 	"time"
+
+	"google.golang.org/protobuf/proto"
 )
 
 const DefaultServerTimeout = time.Second * 3

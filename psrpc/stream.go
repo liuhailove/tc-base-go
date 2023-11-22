@@ -1,8 +1,9 @@
 package psrpc
 
 import (
-	"github.com/golang/protobuf/proto"
 	"time"
+
+	"google.golang.org/protobuf/proto"
 )
 
 type StreamOption func(*StreamOpts)
