@@ -3,11 +3,11 @@ package utils
 import (
 	"crypto/sha1"
 	"fmt"
-	"github.com/liuhailove/tc-base-go/protocol/tc"
 	"os"
 
 	"github.com/jxskiss/base62"
 	"github.com/lithammer/shortuuid/v4"
+	"github.com/liuhailove/tc-base-go/protocol/tc"
 )
 
 const guidSize = 12
