@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"sync"
 	"time"
 
 	"github.com/go-logr/logr"
@@ -65,6 +66,9 @@ type Logger interface {
 	Errorw(msg string, err error, keysAndValues ...interface{})
 	WithValues(keysAndValues ...interface{}) Logger
 	WithName(name string) Logger
+
+	// WithComponent 创建一个名为“<name>.<component>”的新记录器，并使用指定的日志级别
+	WithComponent(component string) Logger
 	WithCallDepth(depth int) Logger
 	WithItemSampler() Logger
 
@@ -72,10 +76,83 @@ type Logger interface {
 	WithoutSampler() Logger
 }
 
+type sharedConfig struct {
+	level           zap.AtomicLevel
+	mu              sync.Mutex
+	componentLevels map[string]zap.AtomicLevel
+	config          *Config
+}
+
+//func newSharedConfig(conf *Config) *sharedConfig {
+//	sc := &sharedConfig{
+//		level:           zap.NewAtomicLevelAt(ParseZapLevel(conf.Level)),
+//		config:          conf,
+//		componentLevels: make(map[string]zap.AtomicLevel),
+//	}
+//	conf.AddUpdateObserver(sc.onConfigUpdate)
+//	_ = sc.onConfigUpdate(conf)
+//	return sc
+//}
+//
+//func (c *sharedConfig) onConfigUpdate(conf *Config) error {
+//	// update log levels
+//	c.level.SetLevel(ParseZapLevel(conf.Level))
+//
+//	// we have to update alla existing component levels
+//	c.mu.Lock()
+//	c.config = conf
+//	for component, atomicLevel := range c.componentLevels {
+//		effectiveLevel := c.level.Level()
+//		parts := strings.Split(component, ".")
+//	confSearch:
+//		for len(parts) > 0 {
+//			search := strings.Join(parts, ".")
+//			if compLevel, ok := conf.ComponentLevels[search]; ok {
+//				effectiveLevel = ParseZapLevel(compLevel)
+//				break confSearch
+//			}
+//			parts = parts[:len(parts)-1]
+//		}
+//		atomicLevel.SetLevel(effectiveLevel)
+//	}
+//	c.mu.Unlock()
+//	return nil
+//}
+//
+//// ensure we have an atomic level in the map representing the full component path
+//// this makes it possible to update the log level after the fact
+//func (c *sharedConfig) setEffectiveLevel(component string) zap.AtomicLevel {
+//	c.mu.Lock()
+//	defer c.mu.Unlock()
+//	if compLevel, ok := c.componentLevels[component]; ok {
+//		return compLevel
+//	}
+//
+//	// search up the hierarchy to find the first level that is set
+//	atomicLevel := zap.NewAtomicLevelAt(c.level.Level())
+//	c.componentLevels[component] = atomicLevel
+//	parts := strings.Split(component, ".")
+//	for len(parts) > 0 {
+//		search := strings.Join(parts, ".")
+//		if compLevel, ok := c.config.ComponentLevels[search]; ok {
+//			atomicLevel.SetLevel(ParseZapLevel(compLevel))
+//			return atomicLevel
+//		}
+//		parts = parts[:len(parts)-1]
+//	}
+//	return atomicLevel
+//}
+
 type ZapLogger struct {
 	zap *zap.SugaredLogger
 	// 存储原始没有采样的logger，避免多个采样器
-	unsampled      *zap.SugaredLogger
+	unsampled *zap.SugaredLogger
+	component string
+
+	// use a nested field as pointer so that all loggers share the same sharedConfig
+	sharedConfig *sharedConfig
+	level        zap.AtomicLevel
+
 	SampleDuration time.Duration
 	SampleInitial  int
 	SampleInterval int
@@ -182,6 +259,19 @@ func (l *ZapLogger) WithName(name string) Logger {
 	return &dup
 }
 
+func (l *ZapLogger) WithComponent(component string) Logger {
+	// zap automatically appends .<name> to the logger name
+	dup := l.WithName(component).(*ZapLogger)
+	if dup.component == "" {
+		dup.component = component
+	} else {
+		dup.component = dup.component + "." + component
+	}
+	// TODO
+	//dup.level = dup.sharedConfig.setEffectiveLevel(dup.component)
+	return dup
+}
+
 func (l *ZapLogger) WithCallDepth(depth int) Logger {
 	dup := *l
 	dup.zap = l.zap.WithOptions(zap.AddCallerSkip(depth))
@@ -252,6 +342,10 @@ func (l LogRLogger) WithValues(keysAndValues ...interface{}) Logger {
 
 func (l LogRLogger) WithName(name string) Logger {
 	return LogRLogger(l.toLogr().WithName(name))
+}
+
+func (l LogRLogger) WithComponent(component string) Logger {
+	return LogRLogger(l.toLogr().WithName(component))
 }
 
 func (l LogRLogger) WithCallDepth(depth int) Logger {
