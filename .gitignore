@@ -17,3 +17,7 @@ bin/
 iml
 tc-base-go.iml
 
+doc/node_modules
+doc/package.json
+doc/package-lock.json
+

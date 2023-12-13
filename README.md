@@ -11,5 +11,4 @@ protoc --twirp_out=. --proto_path=. *.proto
 
 pbjs --ts --keep-case --out tc_models.ts tc_models.proto
 
-pbjs --es6 --keep-case --out tc_models.ts tc_models.proto
 
