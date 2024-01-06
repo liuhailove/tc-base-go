@@ -103,6 +103,7 @@ enum TrackType {
   AUDIO = 0;
   VIDEO = 1;
   DATA = 2;
+  UNRECOGNIZED = -1;
 }
 
 enum TrackSource {

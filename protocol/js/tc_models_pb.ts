@@ -108,12 +108,18 @@ export enum TrackType {
    * @generated from enum value: DATA = 2;
    */
   DATA = 2,
+
+  /**
+   * @generated from enum value: UNRECOGNIZED = -1;
+   */
+  UNRECOGNIZED = -1,
 }
 // Retrieve enum metadata with: proto3.getEnumType(TrackType)
 proto3.util.setEnumType(TrackType, "tc.TrackType", [
   { no: 0, name: "AUDIO" },
   { no: 1, name: "VIDEO" },
   { no: 2, name: "DATA" },
+  { no: -1, name: "UNRECOGNIZED" },
 ]);
 
 /**
