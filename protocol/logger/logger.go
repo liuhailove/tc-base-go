@@ -16,8 +16,8 @@ var (
 )
 
 // InitFromConfig 初始化一个基于zap的logger
-func InitFromConfig(conf Config, name string) {
-	l, err := NewZapLogger(&conf)
+func InitFromConfig(conf *Config, name string) {
+	l, err := NewZapLogger(conf)
 	if err == nil {
 		SetLogger(l, name)
 	}
