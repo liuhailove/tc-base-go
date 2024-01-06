@@ -10,6 +10,8 @@ type Config struct {
 	// 特定参与者/轨道的日志。
 	Sample bool `yaml:"sample,omitempty"`
 
+	ComponentLevels map[string]string `yaml:"component_levels,omitempty"`
+
 	// 每个服务器的全局采样
 	// 采样时，会记录前N条日志
 	SampleInitial int `yaml:"sample_initial,omitempty"`
