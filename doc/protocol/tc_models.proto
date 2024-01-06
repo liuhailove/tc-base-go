@@ -112,6 +112,7 @@ enum TrackSource {
   MICROPHONE = 2;
   SCREEN_SHARE = 3;
   SCREEN_SHARE_AUDIO = 4;
+  TS_UNRECOGNIZED = -1;
 }
 
 message Encryption {

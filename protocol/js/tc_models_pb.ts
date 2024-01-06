@@ -150,6 +150,11 @@ export enum TrackSource {
    * @generated from enum value: SCREEN_SHARE_AUDIO = 4;
    */
   SCREEN_SHARE_AUDIO = 4,
+
+  /**
+   * @generated from enum value: TS_UNRECOGNIZED = -1;
+   */
+  TS_UNRECOGNIZED = -1,
 }
 // Retrieve enum metadata with: proto3.getEnumType(TrackSource)
 proto3.util.setEnumType(TrackSource, "tc.TrackSource", [
@@ -158,6 +163,7 @@ proto3.util.setEnumType(TrackSource, "tc.TrackSource", [
   { no: 2, name: "MICROPHONE" },
   { no: 3, name: "SCREEN_SHARE" },
   { no: 4, name: "SCREEN_SHARE_AUDIO" },
+  { no: -1, name: "TS_UNRECOGNIZED" },
 ]);
 
 /**
